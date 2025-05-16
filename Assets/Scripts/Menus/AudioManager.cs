@@ -7,21 +7,17 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource SFXsource;
-    [SerializeField] private AudioSource crowdSource;
 
     [Header("BGM Clips")]
     public AudioClip mainMenuMusic;
     public AudioClip gameBGM;
-    public AudioClip victoryBGM;
+    public AudioClip gameOverScreenMusic; // New
 
     [Header("SFX Clips")]
-    public AudioClip gravityShift;
-    public AudioClip jump;
-    public AudioClip boxCollision;
-    public AudioClip deathSFX;
+    public AudioClip missileLaunchSFX; // New
+    public AudioClip asteroidExplosionSFX; // New
+    public AudioClip earthImpactSFX; // New
     public AudioClip gameOverSFX;
-    public AudioClip levelCompleteSFX;
-    public AudioClip crowdCheeringSFX;
 
     public static AudioManager instance;
 
@@ -40,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayMainMenuMusic(); 
+        PlayMainMenuMusic();
     }
 
     public void PlayMainMenuMusic()
@@ -57,9 +53,9 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
     }
 
-    public void PlayWinBGM()
+    public void PlayGameOverScreenMusic()
     {
-        musicSource.clip = victoryBGM;
+        musicSource.clip = gameOverScreenMusic;
         musicSource.loop = true;
         musicSource.Play();
     }
@@ -70,10 +66,20 @@ public class AudioManager : MonoBehaviour
         SFXsource.Stop();
     }
 
-    
-    public void PlaySFX(AudioClip clip)
+    // **New methods for playing SFX**
+    public void PlayMissileLaunchSFX()
     {
-        SFXsource.PlayOneShot(clip);
+        PlaySFX(missileLaunchSFX);
+    }
+
+    public void PlayAsteroidExplosionSFX()
+    {
+        PlaySFX(asteroidExplosionSFX);
+    }
+
+    public void PlayEarthImpactSFX()
+    {
+        PlaySFX(earthImpactSFX);
     }
 
     public void PlayGameOverSFX()
@@ -81,20 +87,13 @@ public class AudioManager : MonoBehaviour
         PlaySFX(gameOverSFX);
     }
 
-    public void PlayLevelCompleteSFX()
+
+    private void PlaySFX(AudioClip clip)
     {
-        PlaySFX(levelCompleteSFX);
+        if (clip != null)
+        {
+            SFXsource.PlayOneShot(clip);
+        }
     }
 
-    public void PlayCrowdCheer() => crowdSource.PlayOneShot(crowdCheeringSFX);
-
-    public void SetMusicVolume(float volume)
-    {
-        musicSource.volume = volume;
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        SFXsource.volume = volume;
-    }
 }

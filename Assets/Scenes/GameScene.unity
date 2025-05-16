@@ -342,6 +342,7 @@ MonoBehaviour:
   hardMinNumber: 10
   hardMaxNumber: 50
   currentProblemText: 
+  playerScore: 0
 --- !u!4 &172233985
 Transform:
   m_ObjectHideFlags: 0
@@ -369,7 +370,7 @@ GameObject:
   - component: {fileID: 402099722}
   - component: {fileID: 402099721}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +415,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Timer Placeholder
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -841,6 +842,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &793556173
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1792348535512037447, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.2977116
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0123073
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.24882
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527752998440914879, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2070ee4776eae2e4f9b7b0864f6eff5f, type: 3}
 --- !u!1 &839191130
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +1019,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858083922}
   m_CullTransparentMesh: 1
+--- !u!1 &896502439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 896502441}
+  - component: {fileID: 896502440}
+  m_Layer: 0
+  m_Name: Timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &896502440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896502439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c75526c1f685a4cbb3cd7ed2901276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  survivalTimeText: {fileID: 402099721}
+--- !u!4 &896502441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896502439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.4703565, y: 1.4169801, z: 2.2554839}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &896614860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,6 +1566,7 @@ MonoBehaviour:
   problemText: {fileID: 1039077159}
   answerInput: {fileID: 95264650}
   healthSlider: {fileID: 1508742230}
+  scoreText: {fileID: 1267343966}
 --- !u!114 &938283653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2057,7 +2161,7 @@ GameObject:
   - component: {fileID: 1267343967}
   - component: {fileID: 1267343966}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2102,7 +2206,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Score Placeholder.
+  m_text: 'Score: 00'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4093,3 +4197,5 @@ SceneRoots:
   - {fileID: 653443765}
   - {fileID: 1352431069}
   - {fileID: 839191132}
+  - {fileID: 896502441}
+  - {fileID: 793556173}

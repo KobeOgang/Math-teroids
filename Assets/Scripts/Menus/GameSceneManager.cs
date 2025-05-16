@@ -51,18 +51,22 @@ public class GameSceneManager : MonoBehaviour
     {
         Debug.Log("Reassigning button functions...");
 
-        Button easyButton = GameObject.Find("EasyButton")?.GetComponent<Button>();
-        Button normalButton = GameObject.Find("NormalButton")?.GetComponent<Button>();
-        Button hardButton = GameObject.Find("HardButton")?.GetComponent<Button>();
+        Button[] buttons = FindObjectsOfType<Button>(true);
 
-        if (easyButton) easyButton.onClick.AddListener(SetEasyDifficulty);
-        if (normalButton) normalButton.onClick.AddListener(SetNormalDifficulty);
-        if (hardButton) hardButton.onClick.AddListener(SetHardDifficulty);
+        foreach (Button button in buttons)
+        {
+            if (button.name == "EasyButton") button.onClick.AddListener(SetEasyDifficulty);
+            if (button.name == "NormalButton") button.onClick.AddListener(SetNormalDifficulty);
+            if (button.name == "HardButton") button.onClick.AddListener(SetHardDifficulty);
+        }
+
     }
 
     public void SetDifficultyAndLoadGameScene(GameController.Difficulty difficulty)
     {
         selectedDifficulty = difficulty;
+        AudioManager.instance.StopMusic();
+        AudioManager.instance.PlayGameBGM();
         SceneManager.LoadScene("GameScene");
     }
 

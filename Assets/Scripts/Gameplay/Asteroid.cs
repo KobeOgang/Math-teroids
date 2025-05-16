@@ -13,7 +13,7 @@ public class Asteroid : MonoBehaviour
         if (other.CompareTag("Missile"))
         {
             Destroy(other.gameObject);
-            DestroyAsteroid();
+            DestroyAsteroidWithScore();
         }
         else if (other.CompareTag("Earth"))
         {
@@ -35,6 +35,14 @@ public class Asteroid : MonoBehaviour
 
     private void DestroyAsteroid()
     {
+        Destroy(gameObject);
+        AudioManager.instance.PlayEarthImpactSFX();
+    }
+
+    private void DestroyAsteroidWithScore()
+    {
+        GameController.Instance.AddScore(points); // Add score when destroyed
+        AudioManager.instance.PlayAsteroidExplosionSFX();
         Destroy(gameObject);
     }
 }

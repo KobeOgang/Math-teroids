@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
             GameObject missile = Instantiate(missilePrefab, missileSpawnPoint.position, missileSpawnPoint.rotation);
             Rigidbody2D rb = missile.GetComponent<Rigidbody2D>();
+            AudioManager.instance.PlayMissileLaunchSFX();
+
             if (rb != null)
             {
             }

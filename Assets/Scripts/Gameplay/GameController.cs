@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
     private int currentProblemAnswer;
     public string currentProblemText;
 
+    [Header("Score System")]
+    public int playerScore = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -52,6 +55,17 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitForSeconds(asteroidSpawnRate);
             
+        }
+    }
+
+    public void AddScore(int points)
+    {
+        playerScore += points;
+
+        UIManager uiManager = FindObjectOfType<UIManager>();
+        if (uiManager != null)
+        {
+            uiManager.UpdateScoreUI(playerScore);
         }
     }
 
@@ -127,6 +141,11 @@ public class GameController : MonoBehaviour
         {
             Debug.Log($"GameOver");
             Time.timeScale = 0f;
+            TimeTracker timer = FindObjectOfType<TimeTracker>();
+            if (timer != null)
+            {
+                timer.StopTimer();
+            }
             gameOverPanel.SetActive(true);
         }
     }

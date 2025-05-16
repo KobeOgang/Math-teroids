@@ -10,8 +10,8 @@ public class UIManager : MonoBehaviour
     [Header("UI References")]
     public TMP_Text problemText;
     public TMP_InputField answerInput;
-    
     public Slider healthSlider;
+    public TMP_Text scoreText;
 
     private void Start()
     {
@@ -78,4 +78,8 @@ public class UIManager : MonoBehaviour
         Debug.Log($"Health Slider updated: {currentHealth}");
     }
 
+    public void UpdateScoreUI(int score)
+    {
+        scoreText.text = $"Score: {score}";
+    }
 }
