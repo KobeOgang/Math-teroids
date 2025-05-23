@@ -12,18 +12,23 @@ public class UIManager : MonoBehaviour
     public TMP_InputField answerInput;
     public Slider healthSlider;
     public TMP_Text scoreText;
+    public TMP_Text moneyText;
+
+    public static UIManager Instance;
 
     private void Start()
     {
-        
-        answerInput.onEndEdit.AddListener((value) => {
+
+        answerInput.onEndEdit.AddListener((value) =>
+        {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 CheckAnswer();
             }
         });
 
-        UpdateProblemDisplay();
+
+        //UpdateProblemDisplay();
     }
 
 
@@ -37,34 +42,46 @@ public class UIManager : MonoBehaviour
 
     private void CheckAnswer()
     {
-        
         if (int.TryParse(answerInput.text, out int playerAnswer))
         {
-            if (GameController.Instance.CheckAnswer(playerAnswer))
+            Asteroid[] asteroids = FindObjectsOfType<Asteroid>();
+            foreach (Asteroid asteroid in asteroids)
             {
-                FireMissile();
-                UpdateProblemDisplay();
+                if (asteroid.GetProblemAnswer() == playerAnswer)
+                {
+                    Debug.Log($"Correct answer found for asteroid: {asteroid.gameObject.name}");
+                    FireMissileAtAsteroid(asteroid);
+                    return;
+                }
             }
-            else
-            {
-                
-                
-                answerInput.text = "";
-                answerInput.Select();
-            }
+
+            Debug.Log("No matching asteroid found.");
+            answerInput.text = "";
+            answerInput.Select();
         }
         else
         {
-            Debug.Log("Invalid input format - not an integer");
+            Debug.Log("Invalid input format - not an integer.");
         }
     }
+
+    private void FireMissileAtAsteroid(Asteroid targetAsteroid)
+    {
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.FireMissile(targetAsteroid);
+        }
+    }
+
+
 
     private void FireMissile()
     {
         PlayerController playerController = FindObjectOfType<PlayerController>();
         if (playerController != null)
         {
-            playerController.FireMissile();
+            //playerController.FireMissile();
         }
         else
         {
@@ -82,4 +99,10 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = $"Score: {score}";
     }
+
+    public void UpdateMoneyUI(int amount)
+    {
+        moneyText.text = $"Money: {amount}";
+    }
+
 }

@@ -30,6 +30,10 @@ public class GameController : MonoBehaviour
     [Header("Score System")]
     public int playerScore = 0;
 
+    [Header("Currency System")]
+    public int playerMoney = 0;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -129,12 +133,16 @@ public class GameController : MonoBehaviour
     public void DamageEarth()
     {
         earthHealth--;
-
-        
         UIManager uiManager = FindObjectOfType<UIManager>();
         if (uiManager != null)
         {
             uiManager.UpdateHealthSlider(earthHealth);
+        }
+
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.TriggerEarthHitAnimation();
         }
 
         if (earthHealth <= 0)
@@ -148,6 +156,19 @@ public class GameController : MonoBehaviour
             }
             gameOverPanel.SetActive(true);
         }
+    }
+
+    public void AddMoney(int amount)
+    {
+        playerMoney += amount;
+
+        UIManager uiManager = FindObjectOfType<UIManager>();
+        if (uiManager != null)
+        {
+            uiManager.UpdateMoneyUI(playerMoney);
+        }
+
+        Debug.Log($"Money earned! Current balance: {playerMoney}");
     }
 
 }

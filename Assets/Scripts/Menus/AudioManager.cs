@@ -18,6 +18,10 @@ public class AudioManager : MonoBehaviour
     public AudioClip asteroidExplosionSFX; // New
     public AudioClip earthImpactSFX; // New
     public AudioClip gameOverSFX;
+    public AudioClip forceFieldHit;
+    public AudioClip forceFieldOn;
+    public AudioClip earthHealSFX;
+
 
     public static AudioManager instance;
 
@@ -70,6 +74,19 @@ public class AudioManager : MonoBehaviour
     public void PlayMissileLaunchSFX()
     {
         PlaySFX(missileLaunchSFX);
+    }
+
+    public void PlayForceFieldHitSFX()
+    {
+        PlaySFX(forceFieldHit);
+    }
+    public void PlayForceFieldOnSFX()
+    {
+        PlaySFX(forceFieldOn);
+    }
+    public void PlayEarthHealSFX()
+    {
+        PlaySFX(earthHealSFX);
     }
 
     public void PlayAsteroidExplosionSFX()

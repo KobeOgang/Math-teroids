@@ -15,27 +15,27 @@ public class Missile : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        FindNearestAsteroid();
+        //FindNearestAsteroid();
     }
+    public void SetTarget(Asteroid targetAsteroid)
+    {
+        target = targetAsteroid.transform;
+    }
+
 
     private void FixedUpdate()
     {
-        if (target == null)
-        {
-            
-            return;
-        }
+        if (target == null) return;
 
         Vector2 direction = (Vector2)target.position - (Vector2)transform.position;
         direction.Normalize();
 
-        
         transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.fixedDeltaTime);
 
-        
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
     }
+
 
 
 
@@ -45,9 +45,7 @@ public class Missile : MonoBehaviour
 
         if (asteroids.Length == 0)
         {
-            
-            target = null;
-            
+            target = null; 
             return;
         }
 
@@ -76,7 +74,7 @@ public class Missile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Asteroid"))
+        if (other.CompareTag("Asteroid") && other.transform == target)
         {
             DestroyAsteroid(other.gameObject);
             DestroyMissile();

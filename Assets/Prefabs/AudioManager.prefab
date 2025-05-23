@@ -55,6 +55,9 @@ MonoBehaviour:
   asteroidExplosionSFX: {fileID: 8300000, guid: 19adaf2ba9d34c34fba669389bc18511, type: 3}
   earthImpactSFX: {fileID: 8300000, guid: 5778ac54b7296bb4ab314f270d8fe499, type: 3}
   gameOverSFX: {fileID: 0}
+  forceFieldHit: {fileID: 8300000, guid: 206d2479a4d998c43a047c3e516b0320, type: 3}
+  forceFieldOn: {fileID: 8300000, guid: b37a66668fad72846a565c1f54918097, type: 3}
+  earthHealSFX: {fileID: 8300000, guid: 0e94aefa75b100648b1dfa9d8746f58e, type: 3}
 --- !u!1 &4478404562788757694
 GameObject:
   m_ObjectHideFlags: 0
