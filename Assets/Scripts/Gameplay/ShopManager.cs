@@ -4,47 +4,69 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    public GameObject forceFieldPrefab; // Assign the ForceField prefab in the Inspector
+    public GameObject forceFieldPrefab;
     private GameObject activeForceField;
+    UIManager uiManager;
+
+    private void Start()
+    {
+        uiManager = FindObjectOfType<UIManager>();
+    }
+    //health buff
     public void BuyHealth(int cost)
     {
+        if (GameController.Instance.earthHealth >= 10)
+        {
+            Debug.Log("Health is already at max! Purchase denied.");
+            if (uiManager != null)
+            {
+                uiManager.answerInput.ActivateInputField();
+            }
+            return;
+        }
+
         if (GameController.Instance.playerMoney >= cost)
         {
             GameController.Instance.playerMoney -= cost;
-            GameController.Instance.earthHealth += 5;
+
+            //healing does not exceed max health
+            GameController.Instance.earthHealth = Mathf.Min(GameController.Instance.earthHealth + 5, 10);
 
             AudioManager.instance.PlayEarthHealSFX();
-
-            // Update UI immediately
-            UIManager uiManager = FindObjectOfType<UIManager>();
+            
             if (uiManager != null)
             {
                 uiManager.UpdateMoneyUI(GameController.Instance.playerMoney);
-                uiManager.UpdateHealthSlider(GameController.Instance.earthHealth);
+                uiManager.UpdateHealthBar(GameController.Instance.earthHealth);
+                uiManager.answerInput.ActivateInputField();
             }
 
             Debug.Log("Purchased Health!");
-
         }
         else
         {
+            if (uiManager != null)
+            {
+                uiManager.answerInput.ActivateInputField();
+            }
             Debug.Log("Not enough money!");
+            uiManager.ShowFeedback();
         }
     }
 
+    //Shield Buff
     public void BuyForceField(int cost)
     {
         if (GameController.Instance.playerMoney >= cost)
         {
             GameController.Instance.playerMoney -= cost;
             AudioManager.instance.PlayForceFieldOnSFX();
-            UIManager uiManager = FindObjectOfType<UIManager>();
             if (uiManager != null)
             {
                 uiManager.UpdateMoneyUI(GameController.Instance.playerMoney);
+                uiManager.answerInput.ActivateInputField();
             }
 
-            // Check if a force field already exists
             if (activeForceField == null)
             {
                 SpawnForceField();
@@ -52,19 +74,27 @@ public class ShopManager : MonoBehaviour
             else
             {
                 Debug.Log("Force Field is already active!");
+                uiManager.answerInput.ActivateInputField();
             }
         }
         else
         {
+            if (uiManager != null)
+            {
+                uiManager.answerInput.ActivateInputField();
+            }
             Debug.Log("Not enough money!");
+            uiManager.ShowFeedback();
         }
     }
 
+    //Instantiate shield
     private void SpawnForceField()
     {
-        Vector3 spawnPosition = new Vector3(0, 0, 0); // Adjust as needed for center placement
+        Vector3 spawnPosition = new Vector3(0, 0, 0); 
         activeForceField = Instantiate(forceFieldPrefab, spawnPosition, Quaternion.identity);
-        activeForceField.tag = "ForceField"; // Ensure the tag is set correctly
+        activeForceField.tag = "ForceField";
         Debug.Log("Force Field deployed!");
     }
+
 }

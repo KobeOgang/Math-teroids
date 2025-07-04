@@ -8,19 +8,18 @@ public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance;
 
-    public GameController.Difficulty selectedDifficulty; 
+    public DepartmentLevel selectedDepartment;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
@@ -36,60 +35,71 @@ public class GameSceneManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "MainMenu") 
+        // Check if the reloaded scene is the Main Menu
+        if (scene.name == "MainMenu")
         {
-            ReassignButtonFunctions();
+            // If it is, re-run the logic to find the new buttons and assign their functions
+            ReassignDepartmentButtonFunctions();
         }
-        else if (scene.name == "GameScene") 
+        else if (scene.name == "GameScene")
         {
-            GameController.Instance.currentDifficulty = selectedDifficulty;
-            Debug.Log($"Difficulty set to: {selectedDifficulty}");
+            // Find the GameController in the newly loaded scene and pass the choice to it
+            GameController gc = FindObjectOfType<GameController>();
+            if (gc != null)
+            {
+                gc.currentDepartment = selectedDepartment;
+                Debug.Log($"Department Level set to: {selectedDepartment}");
+            }
         }
     }
 
-    private void ReassignButtonFunctions()
+    // === THIS IS THE RESTORED AND UPDATED METHOD ===
+    private void ReassignDepartmentButtonFunctions()
     {
-        Debug.Log("Reassigning button functions...");
+        Debug.Log("Finding new buttons in Main Menu and reassigning functions...");
 
-        Button[] buttons = FindObjectsOfType<Button>(true);
+        Button[] buttons = FindObjectsOfType<Button>(true); // Find all buttons in the scene
 
         foreach (Button button in buttons)
         {
-            if (button.name == "EasyButton") button.onClick.AddListener(SetEasyDifficulty);
-            if (button.name == "NormalButton") button.onClick.AddListener(SetNormalDifficulty);
-            if (button.name == "HardButton") button.onClick.AddListener(SetHardDifficulty);
-        }
+            // IMPORTANT: Clear any old listeners first to prevent duplicates!
+            button.onClick.RemoveAllListeners();
 
+            if (button.name == "ElementaryButton")
+            {
+                button.onClick.AddListener(SelectElementary);
+            }
+            else if (button.name == "HighSchoolButton")
+            {
+                button.onClick.AddListener(SelectHighSchool);
+            }
+            else if (button.name == "SeniorHighSchoolButton")
+            {
+                button.onClick.AddListener(SelectSeniorHighSchool);
+            }
+        }
     }
 
-    public void SetDifficultyAndLoadGameScene(GameController.Difficulty difficulty)
+    public void SelectDepartmentAndLoadGame(DepartmentLevel department)
     {
-        selectedDifficulty = difficulty;
+        selectedDepartment = department;
         AudioManager.instance.StopMusic();
         AudioManager.instance.PlayGameBGM();
         SceneManager.LoadScene("GameScene");
     }
 
-    public void SetEasyDifficulty()
+    public void SelectElementary()
     {
-        SetDifficultyAndLoadGameScene(GameController.Difficulty.Easy);
+        SelectDepartmentAndLoadGame(DepartmentLevel.Elementary);
     }
 
-    public void SetNormalDifficulty()
+    public void SelectHighSchool()
     {
-        SetDifficultyAndLoadGameScene(GameController.Difficulty.Normal);
+        SelectDepartmentAndLoadGame(DepartmentLevel.HighSchool);
     }
 
-    public void SetHardDifficulty()
+    public void SelectSeniorHighSchool()
     {
-        SetDifficultyAndLoadGameScene(GameController.Difficulty.Hard);
+        SelectDepartmentAndLoadGame(DepartmentLevel.SeniorHighSchool);
     }
-
-    public void Quit()
-    {
-        Application.Quit();
-        Debug.Log("Player quit");
-    }
-
-
 }

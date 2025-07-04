@@ -27,6 +27,8 @@ public class MainMenu : MonoBehaviour
 
     public void RestartGame()
     {
+        AudioManager.instance.StopMusic();
+        AudioManager.instance.PlayGameBGM();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -42,8 +44,8 @@ public class MainMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        //AudioManager.instance.StopMusic(); 
-        //AudioManager.instance.PlayMainMenuMusic(); 
+        AudioManager.instance.StopMusic(); 
+        AudioManager.instance.PlayMainMenuMusic(); 
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }

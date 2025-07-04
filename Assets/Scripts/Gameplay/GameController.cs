@@ -2,27 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public enum Difficulty { Easy, Normal, Hard }
-    public Difficulty currentDifficulty; 
+    public DepartmentLevel currentDepartment;
+
+    public GameObject gameOverUI_Parent;
 
     [Header("Game Settings")]
     public int earthHealth = 10;
     public float asteroidSpawnRate = 2f;
     public float asteroidMinSpeed = 1f;
     public float asteroidMaxSpeed = 3f;
-    public GameObject gameOverPanel;
 
-    [Header("Math Problem Settings")]
-    public int minNumber = 1;
-    public int maxNumber = 10;
-
-    public int easyMinNumber = 1, easyMaxNumber = 6;
-    public int normalMinNumber = 1, normalMaxNumber = 10;
-    public int hardMinNumber = 10, hardMaxNumber = 50;
 
     private int currentProblemAnswer;
     public string currentProblemText;
@@ -33,12 +28,26 @@ public class GameController : MonoBehaviour
     [Header("Currency System")]
     public int playerMoney = 0;
 
+    [Header("Dynamic Difficulty AI")]
+    public float difficultyScore = 0f; // The master score for our AI
+    public int correctAnswersForLevelUp = 3; // Correct answers in a row to make game harder
+    public int incorrectAnswersForLevelDown = 2; // Incorrect answers in a row to make game easier
+    public float difficultyIncreaseAmount = 1.5f; // How much harder it gets
+    public float difficultyDecreaseAmount = 1.0f; // How much easier it gets
+    public float minDifficultyScore = 0f; // The easiest the game can be
+    public float maxDifficultyScore = 10f; // The hardest the game can be
+
+    public PerformanceTracker playerPerformance;
+
+    
+
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            playerPerformance = new PerformanceTracker();
         }
         else
         {
@@ -48,11 +57,10 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        gameOverPanel.SetActive(false);
-        GenerateMathProblem();
         StartCoroutine(SpawnAsteroids());
     }
 
+    //how fast the asteroids spawn
     private IEnumerator SpawnAsteroids()
     {
         while (true)
@@ -62,6 +70,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    //score tracking
     public void AddScore(int points)
     {
         playerScore += points;
@@ -73,58 +82,36 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void GenerateMathProblem()
+
+    public void UpdateDifficulty()
     {
-        int num1 = 0, num2 = 0;
-        int operation = Random.Range(0, currentDifficulty == Difficulty.Easy ? 2 : 4); 
-
-        
-        switch (currentDifficulty)
+        // Check if player's correct streak is high enough to level up
+        if (playerPerformance.correctStreak >= correctAnswersForLevelUp)
         {
-            case Difficulty.Easy:
-                num1 = Random.Range(easyMinNumber, easyMaxNumber);
-                num2 = Random.Range(easyMinNumber, easyMaxNumber);
-                break;
-            case Difficulty.Normal:
-                num1 = Random.Range(normalMinNumber, normalMaxNumber);
-                num2 = Random.Range(normalMinNumber, normalMaxNumber);
-                break;
-            case Difficulty.Hard:
-                num1 = Random.Range(hardMinNumber, hardMaxNumber);
-                num2 = Random.Range(hardMinNumber, hardMaxNumber);
-                break;
+            // Increase the difficulty score
+            difficultyScore += difficultyIncreaseAmount;
+            // "Consume" the streak so it resets to 0
+            playerPerformance.ConsumeCorrectStreak();
+            Debug.Log($"LEVEL UP! New Difficulty Score: {difficultyScore}");
+        }
+        // Check if player's incorrect streak is high enough to level down
+        else if (playerPerformance.incorrectStreak >= incorrectAnswersForLevelDown)
+        {
+            // Decrease the difficulty score
+            difficultyScore -= difficultyDecreaseAmount;
+            // "Consume" the streak so it resets to 0
+            playerPerformance.ConsumeIncorrectStreak();
+            Debug.Log($"LEVEL DOWN! New Difficulty Score: {difficultyScore}");
         }
 
-        switch (operation)
-        {
-            case 0: 
-                currentProblemAnswer = num1 + num2;
-                currentProblemText = $"{num1} + {num2} = ?";
-                break;
-            case 1: 
-                currentProblemAnswer = num1 - num2;
-                currentProblemText = $"{num1} - {num2} = ?";
-                break;
-            case 2: 
-                currentProblemAnswer = num1 * num2;
-                currentProblemText = $"{num1} × {num2} = ?";
-                break;
-            case 3: 
-                
-                num1 = num1 * num2; 
-                currentProblemAnswer = num1 / num2;
-                currentProblemText = $"{num1} ÷ {num2} = ?";
-                break;
-        }
-
-        Debug.Log($"Generated new math problem: {currentProblemText} (Answer: {currentProblemAnswer})");
+        // Make sure the difficulty score stays within our min/max bounds
+        difficultyScore = Mathf.Clamp(difficultyScore, minDifficultyScore, maxDifficultyScore);
     }
 
     public bool CheckAnswer(int playerAnswer)
     {
         if (playerAnswer == currentProblemAnswer)
         {
-            GenerateMathProblem();
             return true;
         }
         return false;
@@ -136,8 +123,9 @@ public class GameController : MonoBehaviour
         UIManager uiManager = FindObjectOfType<UIManager>();
         if (uiManager != null)
         {
-            uiManager.UpdateHealthSlider(earthHealth);
+            uiManager.UpdateHealthBar(earthHealth);
         }
+
 
         PlayerController playerController = FindObjectOfType<PlayerController>();
         if (playerController != null)
@@ -147,14 +135,29 @@ public class GameController : MonoBehaviour
 
         if (earthHealth <= 0)
         {
-            Debug.Log($"GameOver");
+            Debug.Log("GameOver");
             Time.timeScale = 0f;
+
+            // Find the TimeTracker and get the final time as a string
             TimeTracker timer = FindObjectOfType<TimeTracker>();
+            string finalTimeValue = "00:00"; // Default value in case timer isn't found
             if (timer != null)
             {
+                finalTimeValue = timer.GetCurrentTime();
                 timer.StopTimer();
             }
-            gameOverPanel.SetActive(true);
+
+            // Activate the parent UI object and get the manager script
+            if (gameOverUI_Parent != null)
+            {
+                gameOverUI_Parent.SetActive(true);
+                GameOverUIManager gameOverManager = gameOverUI_Parent.GetComponent<GameOverUIManager>();
+                if (gameOverManager != null)
+                {
+                    // Call the setup method, passing in the final score and time
+                    gameOverManager.Setup(playerScore, finalTimeValue);
+                }
+            }
         }
     }
 

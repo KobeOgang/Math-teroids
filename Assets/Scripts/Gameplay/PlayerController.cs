@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-
+    //fires the missile
     public void FireMissile(Asteroid targetAsteroid)
     {
         if (missilePrefab != null && missileSpawnPoint != null && targetAsteroid != null)
@@ -39,11 +39,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //when earth gets hit by asteroid
     public void TriggerEarthHitAnimation()
     {
         if (animator != null)
         {
-            animator.SetTrigger("isHit"); // Trigger the animation
+            animator.SetTrigger("isHit"); 
             StartCoroutine(ResetAnimationAfterDelay(.4f));
         }
         else
@@ -53,29 +54,21 @@ public class PlayerController : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            StartCoroutine(FlashRedEffect()); // Trigger color effect
+            StartCoroutine(FlashRedEffect()); //red color effect
         }
 
-    }
-
-    public void ResetEarthHitAnimation()
-    {
-        if (animator != null)
-        {
-            animator.Play("Idle"); // Ensure it transitions back to the Idle state
-        }
     }
 
     private IEnumerator ResetAnimationAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        animator.Play("anim_EarthIdle"); // Reset animation to Idle state
+        animator.Play("anim_EarthIdle"); //reset animation
     }
 
     private IEnumerator FlashRedEffect()
     {
-        spriteRenderer.color = Color.red; // Change color to red
-        yield return new WaitForSeconds(0.2f); // Short impact duration
-        spriteRenderer.color = Color.white; // Revert to normal
+        spriteRenderer.color = Color.red; 
+        yield return new WaitForSeconds(0.2f); 
+        spriteRenderer.color = Color.white; 
     }
 }

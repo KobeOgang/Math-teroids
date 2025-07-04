@@ -49,7 +49,7 @@ MonoBehaviour:
   musicSource: {fileID: 7511038312345930537}
   SFXsource: {fileID: 8471056642651583981}
   mainMenuMusic: {fileID: 8300000, guid: b38ab83717a45254fbd0e5ac13e5012a, type: 3}
-  gameBGM: {fileID: 8300000, guid: 8ec64ca761373a345ab5b1380cd5bc30, type: 3}
+  gameBGM: {fileID: 8300000, guid: 9f0003bdcb16ae343b625ad578e1df7f, type: 3}
   gameOverScreenMusic: {fileID: 0}
   missileLaunchSFX: {fileID: 8300000, guid: 2d5da8a8019f8804a846bb4028676ced, type: 3}
   asteroidExplosionSFX: {fileID: 8300000, guid: 19adaf2ba9d34c34fba669389bc18511, type: 3}
@@ -58,6 +58,7 @@ MonoBehaviour:
   forceFieldHit: {fileID: 8300000, guid: 206d2479a4d998c43a047c3e516b0320, type: 3}
   forceFieldOn: {fileID: 8300000, guid: b37a66668fad72846a565c1f54918097, type: 3}
   earthHealSFX: {fileID: 8300000, guid: 0e94aefa75b100648b1dfa9d8746f58e, type: 3}
+  wrongAnswerSFX: {fileID: 8300000, guid: 799092e997fb5f24f803b8dc93783c9b, type: 3}
 --- !u!1 &4478404562788757694
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +103,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.81
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -230,7 +231,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.449
+  m_Volume: 0.54
   m_Pitch: 1
   Loop: 1
   Mute: 0

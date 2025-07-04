@@ -22,7 +22,7 @@ public class TimeTracker : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(elapsedTime / 60);
         int seconds = Mathf.FloorToInt(elapsedTime % 60);
-        survivalTimeText.text = $"Survival Time: {minutes:00}:{seconds:00}";
+        survivalTimeText.text = $"{minutes:00}:{seconds:00}";
     }
 
     public void StopTimer()
@@ -30,4 +30,10 @@ public class TimeTracker : MonoBehaviour
         isRunning = false;
     }
 
+    public string GetCurrentTime()
+    {
+        int minutes = Mathf.FloorToInt(elapsedTime / 60);
+        int seconds = Mathf.FloorToInt(elapsedTime % 60);
+        return $"{minutes:00}:{seconds:00}";
+    }
 }

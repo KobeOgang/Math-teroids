@@ -36,42 +36,7 @@ public class Missile : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
     }
 
-
-
-
-    private void FindNearestAsteroid()
-    {
-        GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
-
-        if (asteroids.Length == 0)
-        {
-            target = null; 
-            return;
-        }
-
-        float closestDistance = Mathf.Infinity;
-        Transform closestAsteroid = null;
-
-        foreach (GameObject asteroid in asteroids)
-        {
-            float distance = Vector2.Distance(transform.position, asteroid.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestAsteroid = asteroid.transform;
-            }
-        }
-
-        target = closestAsteroid;
-
-        if (target != null)
-        {
-            
-        }
-    }
-
-
-
+   
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Asteroid") && other.transform == target)

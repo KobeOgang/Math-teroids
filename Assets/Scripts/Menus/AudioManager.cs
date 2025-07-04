@@ -11,16 +11,17 @@ public class AudioManager : MonoBehaviour
     [Header("BGM Clips")]
     public AudioClip mainMenuMusic;
     public AudioClip gameBGM;
-    public AudioClip gameOverScreenMusic; // New
+    public AudioClip gameOverScreenMusic; 
 
     [Header("SFX Clips")]
-    public AudioClip missileLaunchSFX; // New
-    public AudioClip asteroidExplosionSFX; // New
-    public AudioClip earthImpactSFX; // New
+    public AudioClip missileLaunchSFX; 
+    public AudioClip asteroidExplosionSFX; 
+    public AudioClip earthImpactSFX;
     public AudioClip gameOverSFX;
     public AudioClip forceFieldHit;
     public AudioClip forceFieldOn;
     public AudioClip earthHealSFX;
+    public AudioClip wrongAnswerSFX;
 
 
     public static AudioManager instance;
@@ -70,7 +71,7 @@ public class AudioManager : MonoBehaviour
         SFXsource.Stop();
     }
 
-    // **New methods for playing SFX**
+    // methods for playing SFX
     public void PlayMissileLaunchSFX()
     {
         PlaySFX(missileLaunchSFX);
@@ -102,6 +103,11 @@ public class AudioManager : MonoBehaviour
     public void PlayGameOverSFX()
     {
         PlaySFX(gameOverSFX);
+    }
+
+    public void PlayWrongAnswerSFX()
+    {
+        PlaySFX(wrongAnswerSFX);
     }
 
 
